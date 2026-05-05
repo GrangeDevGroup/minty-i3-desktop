@@ -24,9 +24,17 @@ print_error() {
 }
 
 check_root() {
-    if [ "$EUID" -ne 0 ]; then 
+    if [ "$EUID" -ne 0 ]; then
         print_error "Please run as root (use sudo)"
         exit 1
+    fi
+}
+
+get_user_home() {
+    if [ -n "$SUDO_USER" ]; then
+        getent passwd "$SUDO_USER" | cut -d: -f6
+    else
+        echo "$HOME"
     fi
 }
 
@@ -36,29 +44,32 @@ remove_session_entry() {
 }
 
 restore_configs() {
+    local USER_HOME
+    USER_HOME=$(get_user_home)
+
     print_info "Restoring original configurations..."
-    
+
     # Find the most recent backup
-    BACKUP_DIR=$(ls -t "$HOME/.config/minty-i3-backup-"* 2>/dev/null | head -1)
-    
+    BACKUP_DIR=$(ls -dt "$USER_HOME/.config/minty-i3-backup-"* 2>/dev/null | head -1)
+
     if [ -n "$BACKUP_DIR" ]; then
         print_info "Restoring from: $BACKUP_DIR"
-        
-        [ -d "$BACKUP_DIR/i3" ] && rm -rf "$HOME/.config/i3" && cp -r "$BACKUP_DIR/i3" "$HOME/.config/" 2>/dev/null || true
-        [ -f "$BACKUP_DIR/.Xresources" ] && cp "$BACKUP_DIR/.Xresources" "$HOME/" 2>/dev/null || true
-        [ -d "$BACKUP_DIR/rofi" ] && rm -rf "$HOME/.config/rofi" && cp -r "$BACKUP_DIR/rofi" "$HOME/.config/" 2>/dev/null || true
-        [ -f "$BACKUP_DIR/picom.conf" ] && cp "$BACKUP_DIR/picom.conf" "$HOME/.config/" 2>/dev/null || true
-        [ -f "$BACKUP_DIR/dunstrc" ] && cp "$BACKUP_DIR/dunstrc" "$HOME/.config/" 2>/dev/null || true
-        
+
+        [ -d "$BACKUP_DIR/i3" ] && rm -rf "$USER_HOME/.config/i3" && cp -r "$BACKUP_DIR/i3" "$USER_HOME/.config/" 2>/dev/null || true
+        [ -f "$BACKUP_DIR/.Xresources" ] && cp "$BACKUP_DIR/.Xresources" "$USER_HOME/" 2>/dev/null || true
+        [ -d "$BACKUP_DIR/rofi" ] && rm -rf "$USER_HOME/.config/rofi" && cp -r "$BACKUP_DIR/rofi" "$USER_HOME/.config/" 2>/dev/null || true
+        [ -f "$BACKUP_DIR/picom.conf" ] && cp "$BACKUP_DIR/picom.conf" "$USER_HOME/.config/" 2>/dev/null || true
+        [ -f "$BACKUP_DIR/dunstrc" ] && cp "$BACKUP_DIR/dunstrc" "$USER_HOME/.config/" 2>/dev/null || true
+
         print_info "Configurations restored"
     else
         print_warn "No backup found. Removing Minty-I3 configs..."
-        rm -rf "$HOME/.config/i3"
-        rm -f "$HOME/.Xresources"
-        rm -rf "$HOME/.config/rofi"
-        rm -f "$HOME/.config/picom.conf"
-        rm -f "$HOME/.config/dunstrc"
-        rm -f "$HOME/.config/i3status.conf"
+        rm -rf "$USER_HOME/.config/i3"
+        rm -f "$USER_HOME/.Xresources"
+        rm -rf "$USER_HOME/.config/rofi"
+        rm -f "$USER_HOME/.config/picom.conf"
+        rm -f "$USER_HOME/.config/dunstrc"
+        rm -f "$USER_HOME/.config/i3status.conf"
     fi
 }
 

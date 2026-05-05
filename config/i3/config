@@ -122,13 +122,13 @@ bindsym $mod+Shift+Ctrl+r exec --no-startup-id systemctl reboot
 
 # Media keys with visual notifications
 # Volume up - shows notification with current level
-bindsym XF86AudioRaiseVolume exec --no-startup-id bash -c 'pactl set-sink-volume @DEFAULT_SINK@ +5%; CURRENT=$(pactl list sinks | grep "^\s*Volume:" | head -n 1 | sed "s/.* \([0-9]*\)%.*/\1/"); notify-send -t 1000 "Volume" "Level: ${CURRENT}%"'
+bindsym XF86AudioRaiseVolume exec --no-startup-id bash -c 'pactl set-sink-volume @DEFAULT_SINK@ +5%; CURRENT=$(pactl get-sink-volume @DEFAULT_SINK@ | grep -oP "\d+(?=%)" | head -1); notify-send -a volume -t 1500 -h string:x-dunst-stack-tag:volume "Volume" "Level: ${CURRENT}%"'
 
 # Volume down - shows notification with current level
-bindsym XF86AudioLowerVolume exec --no-startup-id bash -c 'pactl set-sink-volume @DEFAULT_SINK@ -5%; CURRENT=$(pactl list sinks | grep "^\s*Volume:" | head -n 1 | sed "s/.* \([0-9]*\)%.*/\1/"); notify-send -t 1000 "Volume" "Level: ${CURRENT}%"'
+bindsym XF86AudioLowerVolume exec --no-startup-id bash -c 'pactl set-sink-volume @DEFAULT_SINK@ -5%; CURRENT=$(pactl get-sink-volume @DEFAULT_SINK@ | grep -oP "\d+(?=%)" | head -1); notify-send -a volume -t 1500 -h string:x-dunst-stack-tag:volume "Volume" "Level: ${CURRENT}%"'
 
 # Mute toggle - shows notification with status
-bindsym XF86AudioMute exec --no-startup-id bash -c 'pactl set-sink-mute @DEFAULT_SINK@ toggle; MUTE=$(pactl list sinks | grep "^\s*Mute:" | head -n 1 | sed "s/.*Mute: \(.*\)/\1/"); if [ "$MUTE" = "yes" ]; then notify-send -t 1000 "Volume" "Muted"; else notify-send -t 1000 "Volume" "Unmuted"; fi'
+bindsym XF86AudioMute exec --no-startup-id bash -c 'pactl set-sink-mute @DEFAULT_SINK@ toggle; MUTE=$(pactl get-sink-mute @DEFAULT_SINK@ | grep -oP "yes|no"); if [ "$MUTE" = "yes" ]; then notify-send -a volume -t 1500 -h string:x-dunst-stack-tag:volume "Volume" "Muted"; else notify-send -a volume -t 1500 -h string:x-dunst-stack-tag:volume "Volume" "Unmuted"; fi'
 
 # Media playback controls
 bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
@@ -136,16 +136,20 @@ bindsym XF86AudioNext exec --no-startup-id playerctl next
 bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 
 # Brightness up - shows notification with current level
-bindsym XF86MonBrightnessUp exec --no-startup-id bash -c 'brightnessctl set +5%; CURRENT=$(brightnessctl get); MAX=$(brightnessctl max); PERCENT=$((CURRENT * 100 / MAX)); notify-send -t 1000 "Brightness" "Level: ${PERCENT}%"'
+bindsym XF86MonBrightnessUp exec --no-startup-id bash -c 'brightnessctl set +5%; CURRENT=$(brightnessctl get); MAX=$(brightnessctl max); PERCENT=$((CURRENT * 100 / MAX)); notify-send -a brightness -t 1500 -h string:x-dunst-stack-tag:brightness "Brightness" "Level: ${PERCENT}%"'
 
 # Brightness down - shows notification with current level
-bindsym XF86MonBrightnessDown exec --no-startup-id bash -c 'brightnessctl set 5%-; CURRENT=$(brightnessctl get); MAX=$(brightnessctl max); PERCENT=$((CURRENT * 100 / MAX)); notify-send -t 1000 "Brightness" "Level: ${PERCENT}%"'
+bindsym XF86MonBrightnessDown exec --no-startup-id bash -c 'brightnessctl set 5%-; CURRENT=$(brightnessctl get); MAX=$(brightnessctl max); PERCENT=$((CURRENT * 100 / MAX)); notify-send -a brightness -t 1500 -h string:x-dunst-stack-tag:brightness "Brightness" "Level: ${PERCENT}%"'
 bindsym Print exec --no-startup-id scrot $HOME/Screenshots/%Y-%m-%d-%H-%M-%S.png
 bindsym $mod+Print exec --no-startup-id scrot -u $HOME/Screenshots/%Y-%m-%d-%H-%M-%S.png
 bindsym $mod+Shift+Print exec --no-startup-id scrot -s $HOME/Screenshots/%Y-%m-%d-%H-%M-%S.png
 
 # Resize mode
 mode "resize" {
+    bindsym h resize shrink width 10 px or 10 ppt
+    bindsym j resize grow height 10 px or 10 ppt
+    bindsym k resize shrink height 10 px or 10 ppt
+    bindsym l resize grow width 10 px or 10 ppt
     bindsym Left resize shrink width 10 px or 10 ppt
     bindsym Down resize grow height 10 px or 10 ppt
     bindsym Up resize shrink height 10 px or 10 ppt
@@ -158,7 +162,7 @@ bindsym $mod+r mode "resize"
 # Bar configuration
 bar {
     position bottom
-    status_command i3status
+    status_command i3status -c ~/.config/i3status.conf
     colors {
         background #1a1a1a
         statusline #ffffff
@@ -205,7 +209,7 @@ assign [class="Thunderbird"] $ws2
 assign [class="Evolution"] $ws2
 assign [class="Code"] $ws3
 assign [class="VSCodium"] $ws3
-assign [class="xfce4-terminal"] $ws4
+assign [class="Xfce4-terminal"] $ws4
 assign [class="Thunar"] $ws5
 assign [class="Nemo"] $ws5
 assign [class="Spotify"] $ws6

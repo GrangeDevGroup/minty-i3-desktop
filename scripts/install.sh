@@ -206,9 +206,6 @@ install_configs() {
         print_warn "show-shortcuts.sh not found"
     fi
     
-    # Update i3 config with correct shortcuts path
-    sed -i "s|/home/d/CascadeProjects/Minty-I3/scripts/show-shortcuts.sh|$USER_HOME/.config/i3/show-shortcuts.sh|g" "$USER_HOME/.config/i3/config" 2>/dev/null || true
-    
     # Set ownership to the user (not root)
     if [ -n "$SUDO_USER" ]; then
         chown -R "$SUDO_USER:$SUDO_USER" "$USER_HOME/.config/i3" 2>/dev/null || true
@@ -218,9 +215,6 @@ install_configs() {
         chown "$SUDO_USER:$SUDO_USER" "$USER_HOME/.config/dunstrc" 2>/dev/null || true
         chown "$SUDO_USER:$SUDO_USER" "$USER_HOME/.config/i3status.conf" 2>/dev/null || true
     fi
-    
-    # Set permissions
-    chmod +x "$USER_HOME/.config/i3/config"
     
     print_info "Configurations installed successfully"
     
@@ -329,9 +323,15 @@ if command -v volumeicon &> /dev/null; then
 fi
 
 # Start polkit authentication agent (required for some system operations)
-if command -v /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &> /dev/null; then
-    /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 &
-fi
+for POLKIT_AGENT in \
+    /usr/lib/policykit-1-gnome/polkit-gnome-authentication-agent-1 \
+    /usr/lib/x86_64-linux-gnu/polkit-gnome/polkit-gnome-authentication-agent-1 \
+    /usr/libexec/polkit-gnome-authentication-agent-1; do
+    if [ -x "$POLKIT_AGENT" ]; then
+        "$POLKIT_AGENT" &
+        break
+    fi
+done
 
 # Show welcome message with shortcuts hint
 sleep 2 && notify-send "Minty-I3 Ready" "Press ⊞+Shift+? or ⊞+F1 for keyboard shortcuts" --expire-time=5000 &

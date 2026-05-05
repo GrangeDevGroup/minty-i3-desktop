@@ -73,8 +73,8 @@ wm.bar.workspace.urgent.background.color: MINT_RED
 wm.bar.workspace.urgent.text.color: MINT_WHITE
 
 ! Font Configuration
-wm.font: Segoe UI 10
-gtk.font_name: Segoe UI 10
+wm.font: DejaVu Sans 10
+gtk.font_name: DejaVu Sans 10
 
 ! Terminal Colors (URxvt)
 URxvt*background: MINT_DARK_GRAY
@@ -97,7 +97,7 @@ URxvt*color14: MINT_CYAN
 URxvt*color15: MINT_WHITE
 
 ! Terminal Settings
-URxvt*font: xft:Segoe UI for Powerline:size=10
+URxvt*font: xft:DejaVu Sans Mono:size=10
 URxvt*letterSpace: 0
 URxvt*lineSpace: 0
 URxvt*scrollBar: false

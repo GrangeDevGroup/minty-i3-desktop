@@ -120,10 +120,10 @@ Complete list of default keybindings for Minty-I3.
 | Keybinding | Action |
 |------------|--------|
 | Mod+r | Enter resize mode |
-| Left | Shrink width |
-| Right | Grow width |
-| Up | Shrink height |
-| Down | Grow height |
+| h / Left | Shrink width |
+| l / Right | Grow width |
+| k / Up | Shrink height |
+| j / Down | Grow height |
 | Enter/Escape | Exit resize mode |
 
 ## Media Keys

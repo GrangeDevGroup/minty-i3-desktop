@@ -32,33 +32,43 @@ print_step() {
 
 # Check if running as root
 check_root() {
-    if [ "$EUID" -ne 0 ]; then 
+    if [ "$EUID" -ne 0 ]; then
         print_error "This uninstaller needs root privileges."
         print_error "Please run with: curl -sSL ... | sudo bash"
         exit 1
     fi
 }
 
+get_user_home() {
+    if [ -n "$SUDO_USER" ]; then
+        getent passwd "$SUDO_USER" | cut -d: -f6
+    else
+        echo "$HOME"
+    fi
+}
+
 # Remove configs
 remove_configs() {
+    local USER_HOME
+    USER_HOME=$(get_user_home)
+
     print_step "Removing Minty-I3 configurations..."
-    
+
     # Backup current configs first
-    if [ -d "$HOME/.config/i3" ]; then
-        BACKUP_DIR="$HOME/.config/minty-i3-backup-$(date +%Y%m%d-%H%M%S)"
+    if [ -d "$USER_HOME/.config/i3" ]; then
+        BACKUP_DIR="$USER_HOME/.config/minty-i3-backup-$(date +%Y%m%d-%H%M%S)"
         print_info "Backing up current config to $BACKUP_DIR"
-        cp -r "$HOME/.config/i3" "$BACKUP_DIR/" 2>/dev/null || true
+        cp -r "$USER_HOME/.config/i3" "$BACKUP_DIR/" 2>/dev/null || true
     fi
-    
+
     # Remove config files
-    rm -rf "$HOME/.config/i3"
-    rm -f "$HOME/.Xresources"
-    rm -f "$HOME/.config/i3status.conf"
-    rm -rf "$HOME/.config/rofi"
-    rm -f "$HOME/.config/picom.conf"
-    rm -f "$HOME/.config/dunstrc"
-    rm -f "$HOME/.config/i3/autostart.sh"
-    
+    rm -rf "$USER_HOME/.config/i3"
+    rm -f "$USER_HOME/.Xresources"
+    rm -f "$USER_HOME/.config/i3status.conf"
+    rm -rf "$USER_HOME/.config/rofi"
+    rm -f "$USER_HOME/.config/picom.conf"
+    rm -f "$USER_HOME/.config/dunstrc"
+
     print_info "Configuration files removed"
 }
 
@@ -97,14 +107,16 @@ remove_packages() {
 
 # Restore original configs if backup exists
 restore_original() {
+    local USER_HOME
+    USER_HOME=$(get_user_home)
+
     print_step "Checking for original backups..."
-    
-    # Look for backup directories
-    BACKUP_COUNT=$(ls -d ~/.config/minty-i3-backup-* 2>/dev/null | wc -l)
-    
+
+    BACKUP_COUNT=$(ls -d "$USER_HOME/.config/minty-i3-backup-"* 2>/dev/null | wc -l)
+
     if [ "$BACKUP_COUNT" -gt 0 ]; then
         print_info "Found $BACKUP_COUNT backup directories"
-        print_info "Your original configs are preserved in ~/.config/minty-i3-backup-*"
+        print_info "Your original configs are preserved in $USER_HOME/.config/minty-i3-backup-*"
     fi
 }
 

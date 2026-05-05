@@ -4,35 +4,41 @@
 ###############################################################################
 
 [global]
-    # Linux Mint Dark Theme Colors
-    background = "#1a1a1a"
-    foreground = "#ffffff"
-    frame_color = "#87cf3e"
-    
-    # Window settings
-    geometry = "300x50-10+40"
-    transparency = 90
+    # Display
+    monitor = 0
+    follow = mouse
+
+    # Geometry (dunst 1.7+ format — replaces deprecated "geometry")
+    width = 300
+    height = 300
+    origin = top-right
+    offset = 10x40
+
+    # Window appearance
+    transparency = 10
     padding = 12
     horizontal_padding = 12
     frame_width = 2
+    frame_color = "#87cf3e"
     gap_size = 4
     separator_height = 2
-    separator_color = "frame"
-    
+    separator_color = frame
+    corner_radius = 0
+
     # Text settings
-    font = "Segoe UI 10"
+    font = "DejaVu Sans 10"
     line_height = 0
-    markup = "full"
+    markup = full
     format = "<b>%s</b>\n%b"
-    alignment = "left"
-    vertical_alignment = "center"
+    alignment = left
+    vertical_alignment = center
     show_age_threshold = 60
-    ellipsize = "middle"
-    ignore_newline = "no"
+    ellipsize = middle
+    ignore_newline = no
     stack_duplicates = true
     hide_duplicate_count = false
     show_indicators = yes
-    
+
     # Behavior
     indicate_hidden = yes
     sticky_history = yes
@@ -42,17 +48,12 @@
     always_run_script = true
     title = "Dunst"
     class = "Dunst"
-    corner_radius = 0
     ignore_dbusclose = false
-    
-    # Layer (for Wayland)
-    layer = "overlay"
-    force_xwayland = false
-    
+
     # Mouse actions
-    mouse_left_click = "close_current"
-    mouse_middle_click = "do_action, close_current"
-    mouse_right_click = "close_all"
+    mouse_left_click = close_current
+    mouse_middle_click = do_action, close_current
+    mouse_right_click = close_all
 
 [urgency_low]
     background = "#1a1a1a"
@@ -87,8 +88,10 @@
     appname = "volume"
     timeout = 2
     history_ignore = yes
+    format = "<b>%s</b>  %b"
 
 [brightness]
     appname = "brightness"
     timeout = 2
     history_ignore = yes
+    format = "<b>%s</b>  %b"

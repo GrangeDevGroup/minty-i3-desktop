@@ -36,7 +36,7 @@ cat > "$SHORTCUTS_HTML" << EOF
 body {
     background-color: ${BG};
     color: ${FG};
-    font-family: 'Segoe UI', sans-serif;
+    font-family: 'Ubuntu', 'DejaVu Sans', sans-serif;
     font-size: 13px;
     margin: 20px;
     padding: 0;
@@ -170,67 +170,71 @@ hr {
 </html>
 EOF
 
-# Check if we have a suitable browser for displaying HTML
-if command -v zenity &> /dev/null; then
-    # Use zenity with HTML support for better styling
-    zenity --html --filename="$SHORTCUTS_HTML" \
-        --title="Minty-I3 Shortcuts" \
-        --width=$WINDOW_WIDTH \
-        --height=$WINDOW_HEIGHT &
-    ZENITY_PID=$!
-    
-    # Wait for window to appear and position it on the left
-    sleep 0.5
-    WINDOW_ID=$(xdotool search --class "zenity" | tail -1)
-    if [ -n "$WINDOW_ID" ]; then
-        xdotool windowmove "$WINDOW_ID" "$POS_X" "$POS_Y"
-    fi
-    
-    # Auto-close after 30 seconds
-    (sleep 30 && kill $ZENITY_PID 2>/dev/null) &
-    
-    # Wait for user to close or timeout
-    wait $ZENITY_PID 2>/dev/null
-    
-elif command -v yad &> /dev/null; then
-    # Fallback to yad text display positioned on left
-    # Convert HTML to plain text for yad
-    SHORTCUTS_TXT=$(mktemp)
-    sed 's/<[^>]*>//g' "$SHORTCUTS_HTML" | sed 's/&#[xX][0-9a-fA-F]*;/⊞/g' > "$SHORTCUTS_TXT"
-    
-    yad --text-info --filename="$SHORTCUTS_TXT" \
+# Display the shortcuts panel — try renderers in order of quality
+if command -v yad &> /dev/null; then
+    # yad supports --html for proper styled rendering
+    yad --html --uri="file://$SHORTCUTS_HTML" \
         --title="Minty-I3 Shortcuts" \
         --width=$WINDOW_WIDTH \
         --height=$WINDOW_HEIGHT \
         --posx=$POS_X --posy=$POS_Y \
         --no-buttons \
-        --borders=20 \
-        --back="$BG" \
-        --fore="$FG" \
-        --fontname="Segoe UI 11" \
         --timeout=30 \
         --timeout-indicator=bottom &
-        
+    YAD_PID=$!
+    wait $YAD_PID 2>/dev/null
+
+elif command -v zenity &> /dev/null; then
+    # zenity does not support HTML — convert to plain text
+    SHORTCUTS_TXT=$(mktemp)
+    sed 's/<[^>]*>//g' "$SHORTCUTS_HTML" \
+        | sed 's/&#x229E;/⊞/g' \
+        | sed '/^[[:space:]]*$/d' > "$SHORTCUTS_TXT"
+
+    zenity --text-info \
+        --filename="$SHORTCUTS_TXT" \
+        --title="Minty-I3 Shortcuts (⊞ = Super/Win key)" \
+        --width=$WINDOW_WIDTH \
+        --height=$WINDOW_HEIGHT &
+    ZENITY_PID=$!
+
+    sleep 0.5
+    WINDOW_ID=$(xdotool search --pid "$ZENITY_PID" 2>/dev/null | tail -1)
+    [ -n "$WINDOW_ID" ] && xdotool windowmove "$WINDOW_ID" "$POS_X" "$POS_Y"
+
+    (sleep 30 && kill "$ZENITY_PID" 2>/dev/null) &
+    wait "$ZENITY_PID" 2>/dev/null
     rm -f "$SHORTCUTS_TXT"
-else
-    # Final fallback: display in browser
-    if command -v firefox &> /dev/null; then
-        firefox --new-window "file://$SHORTCUTS_HTML" &
-        sleep 1
-        WINDOW_ID=$(xdotool search --class "firefox" | tail -1)
-        if [ -n "$WINDOW_ID" ]; then
-            xdotool windowmove "$WINDOW_ID" "$POS_X" "$POS_Y"
-            xdotool windowsize "$WINDOW_ID" "$WINDOW_WIDTH" "$WINDOW_HEIGHT"
-        fi
-        # Auto-close after 30 seconds
-        (sleep 30 && kill $(pgrep -f "firefox.*$SHORTCUTS_HTML") 2>/dev/null) &
-    elif command -v chromium &> /dev/null; then
-        chromium --app="file://$SHORTCUTS_HTML" --window-size=$WINDOW_WIDTH,$WINDOW_HEIGHT --window-position=$POS_X,$POS_Y &
-        (sleep 30 && kill $(pgrep -f "chromium.*$SHORTCUTS_HTML") 2>/dev/null) &
-    else
-        # Last resort: terminal
-        xfce4-terminal --title="Minty-I3 Shortcuts (⊞ = Windows Key)" --geometry=50x35 --hold -e "cat $SHORTCUTS_HTML | sed 's/<[^>]*>//g' | sed 's/&#x229E;/[WIN]/g'"
+
+elif command -v firefox &> /dev/null; then
+    firefox --new-window "file://$SHORTCUTS_HTML" &
+    sleep 1
+    WINDOW_ID=$(xdotool search --class "Navigator" 2>/dev/null | tail -1)
+    if [ -n "$WINDOW_ID" ]; then
+        xdotool windowmove "$WINDOW_ID" "$POS_X" "$POS_Y"
+        xdotool windowsize "$WINDOW_ID" "$WINDOW_WIDTH" "$WINDOW_HEIGHT"
     fi
+    (sleep 30 && pkill -f "firefox.*$SHORTCUTS_HTML" 2>/dev/null) &
+
+elif command -v chromium-browser &> /dev/null || command -v chromium &> /dev/null; then
+    CHROMIUM=$(command -v chromium-browser || command -v chromium)
+    "$CHROMIUM" --app="file://$SHORTCUTS_HTML" \
+        --window-size=$WINDOW_WIDTH,$WINDOW_HEIGHT \
+        --window-position=$POS_X,$POS_Y &
+    (sleep 30 && pkill -f "chromium.*$SHORTCUTS_HTML" 2>/dev/null) &
+
+else
+    # Last resort: terminal with plain text
+    SHORTCUTS_TXT=$(mktemp)
+    sed 's/<[^>]*>//g' "$SHORTCUTS_HTML" \
+        | sed 's/&#x229E;/[WIN]/g' \
+        | sed '/^[[:space:]]*$/d' > "$SHORTCUTS_TXT"
+    xfce4-terminal \
+        --title="Minty-I3 Shortcuts ([WIN] = Super/Windows key)" \
+        --geometry=52x40 \
+        --hold \
+        --command="cat $SHORTCUTS_TXT"
+    rm -f "$SHORTCUTS_TXT"
 fi
 
 # Clean up

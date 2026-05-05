@@ -4,14 +4,14 @@ How to customize your Minty-I3 installation.
 
 ## Changing Colors
 
-Edit `~/.Xresources` to customize the color scheme:
+Edit `~/.Xresources` to customize the color scheme. Variable names use the `MINT_` prefix:
 
 ```bash
-# Change accent color
-#define WIN10_ACCENT_BLUE  #ff00ff
+# Change accent color (currently Mint green)
+#define MINT_GREEN  #ff00ff
 
 # Change background
-*.background: WIN10_DARK_GRAY
+*.background: MINT_DARK_GRAY
 ```
 
 After editing, reload:
@@ -22,12 +22,14 @@ i3-msg reload
 
 ## Changing Fonts
 
-Edit `~/.Xresources`:
+Edit `~/.Xresources`. Use fonts available on your system (check with `fc-list`):
 
 ```bash
-wm.font: "Your Font 12"
-URxvt*font: xft:Your Font:size=12
+wm.font: Ubuntu 11
+URxvt*font: xft:Ubuntu Mono:size=11
 ```
+
+Popular choices: `DejaVu Sans`, `Ubuntu`, `Noto Sans`, `JetBrains Mono`.
 
 ## Changing Wallpaper
 
