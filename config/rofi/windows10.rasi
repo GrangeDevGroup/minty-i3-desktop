@@ -1,0 +1,110 @@
+/*******************************************************************************
+ * Minty-I3 Rofi Theme - Linux Mint Dark Style
+ ******************************************************************************/
+
+* {
+    background-color: #1a1a1a;
+    text-color: #ffffff;
+    border-color: #2d2d2d;
+    selected-background: #87cf3e;
+    selected-text: #ffffff;
+    alternate-selected-background: #87cf3e;
+    alternate-selected-text: #ffffff;
+    spacing: 2;
+}
+
+window {
+    background-color: #1a1a1a;
+    border: 2px;
+    border-color: #87cf3e;
+    border-radius: 0;
+    padding: 10;
+    width: 600;
+    font: "Segoe UI 10";
+}
+
+mainbox {
+    background-color: #1a1a1a;
+    border: 0;
+    padding: 0;
+}
+
+inputbar {
+    background-color: #2d2d2d;
+    border: 0;
+    padding: 8;
+    children: [ prompt, textbox-prompt-colon, entry, case-indicator ];
+}
+
+prompt {
+    background-color: #2d2d2d;
+    text-color: #87cf3e;
+    padding: 4;
+}
+
+textbox-prompt-colon {
+    expand: false;
+    str: ":";
+    background-color: #2d2d2d;
+    text-color: #ffffff;
+    padding: 4;
+}
+
+entry {
+    background-color: #2d2d2d;
+    text-color: #ffffff;
+    padding: 4;
+    placeholder: "Search...";
+    placeholder-color: #888888;
+}
+
+case-indicator {
+    background-color: #2d2d2d;
+    text-color: #888888;
+    padding: 4;
+}
+
+listview {
+    background-color: #1a1a1a;
+    border: 0;
+    padding: 8;
+    spacing: 2;
+    scrollbar: false;
+}
+
+element {
+    background-color: #1a1a1a;
+    text-color: #ffffff;
+    padding: 8;
+    border: 0;
+}
+
+element selected {
+    background-color: #87cf3e;
+    text-color: #ffffff;
+    border: 0;
+}
+
+element-text {
+    background-color: transparent;
+    text-color: inherit;
+}
+
+element-icon {
+    background-color: transparent;
+    size: 1.0000em;
+    padding: 4;
+}
+
+message {
+    background-color: #1a1a1a;
+    border: 1px;
+    border-color: #2d2d2d;
+    padding: 8;
+}
+
+textbox {
+    background-color: #1a1a1a;
+    text-color: #ffffff;
+    padding: 8;
+}

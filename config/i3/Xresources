@@ -1,0 +1,126 @@
+###############################################################################
+# Minty-I3 Xresources
+# Linux Mint Dark Theme Colors
+###############################################################################
+
+! Linux Mint Dark Theme Palette
+#define MINT_BLACK        #0d0d0d
+#define MINT_DARK_GRAY    #1a1a1a
+#define MINT_GRAY         #2d2d2d
+#define MINT_MEDIUM_GRAY  #3d3d3d
+#define MINT_LIGHT_GRAY   #4a4a4a
+#define MINT_WHITE        #ffffff
+#define MINT_LIGHT_TEXT   #e0e0e0
+#define MINT_DIM_TEXT     #888888
+#define MINT_GREEN        #87cf3e
+#define MINT_GREEN_DARK   #6ab32e
+#define MINT_GREEN_LIGHT  #a8e058
+#define MINT_RED          #e74c3c
+#define MINT_ORANGE       #f39c12
+#define MINT_YELLOW       #f1c40f
+#define MINT_BLUE         #3498db
+#define MINT_PURPLE       #9b59b6
+#define MINT_CYAN         #1abc9c
+
+! Background and Foreground
+*.background: MINT_DARK_GRAY
+*.foreground: MINT_WHITE
+
+! i3 Window Manager Colors
+wm.client.focused.color.border: MINT_GREEN
+wm.client.focused.color.background: MINT_DARK_GRAY
+wm.client.focused.color.text: MINT_WHITE
+wm.client.focused.color.indicator: MINT_GREEN
+wm.client.focused.color.child_border: MINT_GREEN
+
+wm.client.focused_inactive.color.border: MINT_GRAY
+wm.client.focused_inactive.color.background: MINT_DARK_GRAY
+wm.client.focused_inactive.color.text: MINT_LIGHT_TEXT
+wm.client.focused_inactive.color.indicator: MINT_GRAY
+wm.client.focused_inactive.color.child_border: MINT_GRAY
+
+wm.client.unfocused.color.border: MINT_GRAY
+wm.client.unfocused.color.background: MINT_DARK_GRAY
+wm.client.unfocused.color.text: MINT_DIM_TEXT
+wm.client.unfocused.color.indicator: MINT_GRAY
+wm.client.unfocused.color.child_border: MINT_GRAY
+
+wm.client.urgent.color.border: MINT_RED
+wm.client.urgent.color.background: MINT_DARK_GRAY
+wm.client.urgent.color.text: MINT_WHITE
+wm.client.urgent.color.indicator: MINT_RED
+wm.client.urgent.color.child_border: MINT_RED
+
+! Bar Colors
+wm.bar.background.color: MINT_DARK_GRAY
+wm.bar.statusline.color: MINT_WHITE
+wm.bar.separator.color: MINT_GREEN
+
+wm.bar.workspace.focused.border.color: MINT_GREEN
+wm.bar.workspace.focused.background.color: MINT_DARK_GRAY
+wm.bar.workspace.focused.text.color: MINT_WHITE
+
+wm.bar.workspace.active.border.color: MINT_GRAY
+wm.bar.workspace.active.background.color: MINT_DARK_GRAY
+wm.bar.workspace.active.text.color: MINT_LIGHT_TEXT
+
+wm.bar.workspace.inactive.border.color: MINT_DARK_GRAY
+wm.bar.workspace.inactive.background.color: MINT_DARK_GRAY
+wm.bar.workspace.inactive.text.color: MINT_DIM_TEXT
+
+wm.bar.workspace.urgent.border.color: MINT_RED
+wm.bar.workspace.urgent.background.color: MINT_RED
+wm.bar.workspace.urgent.text.color: MINT_WHITE
+
+! Font Configuration
+wm.font: Segoe UI 10
+gtk.font_name: Segoe UI 10
+
+! Terminal Colors (URxvt)
+URxvt*background: MINT_DARK_GRAY
+URxvt*foreground: MINT_WHITE
+URxvt*color0: MINT_BLACK
+URxvt*color1: MINT_RED
+URxvt*color2: MINT_GREEN
+URxvt*color3: MINT_YELLOW
+URxvt*color4: MINT_BLUE
+URxvt*color5: MINT_PURPLE
+URxvt*color6: MINT_CYAN
+URxvt*color7: MINT_LIGHT_GRAY
+URxvt*color8: MINT_GRAY
+URxvt*color9: MINT_RED
+URxvt*color10: MINT_GREEN
+URxvt*color11: MINT_YELLOW
+URxvt*color12: MINT_BLUE
+URxvt*color13: MINT_PURPLE
+URxvt*color14: MINT_CYAN
+URxvt*color15: MINT_WHITE
+
+! Terminal Settings
+URxvt*font: xft:Segoe UI for Powerline:size=10
+URxvt*letterSpace: 0
+URxvt*lineSpace: 0
+URxvt*scrollBar: false
+URxvt*scrollTtyOutput: false
+URxvt*scrollWithBuffer: true
+URxvt*scrollTtyKeypress: true
+URxvt*saveLines: 5000
+URxvt*cursorBlink: true
+URxvt*cursorColor: MINT_GREEN
+URxvt*cursorColor2: MINT_DARK_GRAY
+URxvt*cursorUnderline: false
+
+! Transparency (optional)
+! URxvt*transparent: true
+! URxvt*shading: 20
+
+! Rofi Colors
+rofi.color-window: MINT_DARK_GRAY, MINT_GREEN, MINT_GRAY
+rofi.color-normal: MINT_DARK_GRAY, MINT_WHITE, MINT_DARK_GRAY, MINT_GREEN, MINT_WHITE
+rofi.color-active: MINT_DARK_GRAY, MINT_GREEN, MINT_DARK_GRAY, MINT_GREEN, MINT_WHITE
+rofi.color-urgent: MINT_DARK_GRAY, MINT_RED, MINT_DARK_GRAY, MINT_RED, MINT_WHITE
+
+! Dunst Notification Colors
+! dunst.background: MINT_DARK_GRAY
+! dunst.foreground: MINT_WHITE
+! dunst.frame: MINT_GREEN

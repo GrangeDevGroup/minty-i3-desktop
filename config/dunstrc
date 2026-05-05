@@ -1,0 +1,94 @@
+###############################################################################
+# Minty-I3 Dunst Configuration
+# Linux Mint Dark Theme Notifications
+###############################################################################
+
+[global]
+    # Linux Mint Dark Theme Colors
+    background = "#1a1a1a"
+    foreground = "#ffffff"
+    frame_color = "#87cf3e"
+    
+    # Window settings
+    geometry = "300x50-10+40"
+    transparency = 90
+    padding = 12
+    horizontal_padding = 12
+    frame_width = 2
+    gap_size = 4
+    separator_height = 2
+    separator_color = "frame"
+    
+    # Text settings
+    font = "Segoe UI 10"
+    line_height = 0
+    markup = "full"
+    format = "<b>%s</b>\n%b"
+    alignment = "left"
+    vertical_alignment = "center"
+    show_age_threshold = 60
+    ellipsize = "middle"
+    ignore_newline = "no"
+    stack_duplicates = true
+    hide_duplicate_count = false
+    show_indicators = yes
+    
+    # Behavior
+    indicate_hidden = yes
+    sticky_history = yes
+    history_length = 20
+    dmenu = "/usr/bin/rofi -dmenu -p dunst -theme windows10"
+    browser = "/usr/bin/firefox --new-tab"
+    always_run_script = true
+    title = "Dunst"
+    class = "Dunst"
+    corner_radius = 0
+    ignore_dbusclose = false
+    
+    # Layer (for Wayland)
+    layer = "overlay"
+    force_xwayland = false
+    
+    # Mouse actions
+    mouse_left_click = "close_current"
+    mouse_middle_click = "do_action, close_current"
+    mouse_right_click = "close_all"
+
+[urgency_low]
+    background = "#1a1a1a"
+    foreground = "#888888"
+    frame_color = "#2d2d2d"
+    timeout = 5
+
+[urgency_normal]
+    background = "#1a1a1a"
+    foreground = "#ffffff"
+    frame_color = "#87cf3e"
+    timeout = 10
+
+[urgency_critical]
+    background = "#1a1a1a"
+    foreground = "#ffffff"
+    frame_color = "#e74c3c"
+    timeout = 0
+
+# Application-specific rules
+[spotify]
+    appname = "Spotify"
+    timeout = 4
+    format = "<b>Now Playing</b>\n%s\n%b"
+
+[discord]
+    appname = "Discord"
+    timeout = 5
+    format = "<b>Discord</b>\n%s\n%b"
+
+[volume]
+    appname = "volume"
+    timeout = 2
+    history_ignore = yes
+
+[brightness]
+    appname = "brightness"
+    timeout = 2
+    history_ignore = yes
