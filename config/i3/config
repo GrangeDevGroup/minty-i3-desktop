@@ -120,15 +120,26 @@ bindsym $mod+Shift+l exec --no-startup-id i3lock -c 000000
 bindsym $mod+Shift+Shift+l exec --no-startup-id systemctl poweroff
 bindsym $mod+Shift+Shift+r exec --no-startup-id systemctl reboot
 
-# Media keys 
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle
+# Media keys with visual notifications
+# Volume up - shows notification with current level
+bindsym XF86AudioRaiseVolume exec --no-startup-id bash -c 'pactl set-sink-volume @DEFAULT_SINK@ +5%; CURRENT=$(pactl list sinks | grep "^\s*Volume:" | head -n 1 | sed "s/.* \([0-9]*\)%.*/\1/"); notify-send -t 1000 "Volume" "Level: ${CURRENT}%"'
+
+# Volume down - shows notification with current level
+bindsym XF86AudioLowerVolume exec --no-startup-id bash -c 'pactl set-sink-volume @DEFAULT_SINK@ -5%; CURRENT=$(pactl list sinks | grep "^\s*Volume:" | head -n 1 | sed "s/.* \([0-9]*\)%.*/\1/"); notify-send -t 1000 "Volume" "Level: ${CURRENT}%"'
+
+# Mute toggle - shows notification with status
+bindsym XF86AudioMute exec --no-startup-id bash -c 'pactl set-sink-mute @DEFAULT_SINK@ toggle; MUTE=$(pactl list sinks | grep "^\s*Mute:" | head -n 1 | sed "s/.*Mute: \(.*\)/\1/"); if [ "$MUTE" = "yes" ]; then notify-send -t 1000 "Volume" "Muted"; else notify-send -t 1000 "Volume" "Unmuted"; fi'
+
+# Media playback controls
 bindsym XF86AudioPlay exec --no-startup-id playerctl play-pause
 bindsym XF86AudioNext exec --no-startup-id playerctl next
 bindsym XF86AudioPrev exec --no-startup-id playerctl previous
-bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +5%
-bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
+
+# Brightness up - shows notification with current level
+bindsym XF86MonBrightnessUp exec --no-startup-id bash -c 'brightnessctl set +5%; CURRENT=$(brightnessctl get); MAX=$(brightnessctl max); PERCENT=$((CURRENT * 100 / MAX)); notify-send -t 1000 "Brightness" "Level: ${PERCENT}%"'
+
+# Brightness down - shows notification with current level
+bindsym XF86MonBrightnessDown exec --no-startup-id bash -c 'brightnessctl set 5%-; CURRENT=$(brightnessctl get); MAX=$(brightnessctl max); PERCENT=$((CURRENT * 100 / MAX)); notify-send -t 1000 "Brightness" "Level: ${PERCENT}%"
 bindsym Print exec --no-startup-id scrot $HOME/Screenshots/%Y-%m-%d-%H-%M-%S.png
 bindsym $mod+Print exec --no-startup-id scrot -u $HOME/Screenshots/%Y-%m-%d-%H-%M-%S.png
 bindsym $mod+Shift+Print exec --no-startup-id scrot -s $HOME/Screenshots/%Y-%m-%d-%H-%M-%S.png
