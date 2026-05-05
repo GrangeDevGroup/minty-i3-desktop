@@ -17,10 +17,10 @@ Complete list of default keybindings for Minty-I3.
 | Mod+Shift+r | Restart i3 |
 | Mod+Shift+c | Reload i3 configuration |
 | Mod+Shift+s | Suspend system |
-| Mod+Shift+Shift+s | Hibernate system |
-| Mod+Shift+l | Lock screen |
-| Mod+Shift+Shift+l | Power off |
-| Mod+Shift+Shift+r | Reboot |
+| Mod+Shift+Ctrl+s | Hibernate system |
+| Mod+Shift+x | Lock screen |
+| Mod+Shift+Ctrl+l | Power off |
+| Mod+Shift+Ctrl+r | Reboot |
 
 ## Window Management
 
