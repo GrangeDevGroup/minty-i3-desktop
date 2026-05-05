@@ -4,7 +4,8 @@
 # Usage: curl -sSL https://raw.githubusercontent.com/GrangeDevGroup/minty-i3-desktop/main/install.sh | sudo bash
 ###############################################################################
 
-set -e
+# Don't exit on error - be bulletproof
+set +e
 
 # Colors
 RED='\033[0;31m'
@@ -59,8 +60,13 @@ check_mint() {
 # Install dependencies (git)
 install_deps() {
     print_step "Installing required dependencies..."
-    apt-get update
-    apt-get install -y git curl wget
+    apt-get update || print_warn "apt update had issues, continuing..."
+    apt-get install -y git curl wget || {
+        print_warn "Some packages failed to install, trying individually..."
+        apt-get install -y git || print_warn "git install failed"
+        apt-get install -y curl || print_warn "curl install failed"
+        apt-get install -y wget || print_warn "wget install failed"
+    }
 }
 
 # Download repository
@@ -73,11 +79,20 @@ download_repo() {
     
     # Clone the repository
     if command -v git &> /dev/null; then
-        git clone --depth 1 "$REPO_URL" "$INSTALL_DIR"
+        git clone --depth 1 "$REPO_URL" "$INSTALL_DIR" || {
+            print_warn "Git clone failed, trying tarball fallback..."
+            curl -sL "${REPO_URL%.git}/archive/refs/heads/main.tar.gz" | tar -xz -C "$INSTALL_DIR" --strip-components=1 || {
+                print_error "Failed to download repository"
+                exit 1
+            }
+        }
     else
         # Fallback: download as tarball
         print_info "Git not found, downloading archive..."
-        curl -sL "${REPO_URL%.git}/archive/refs/heads/main.tar.gz" | tar -xz -C "$INSTALL_DIR" --strip-components=1
+        curl -sL "${REPO_URL%.git}/archive/refs/heads/main.tar.gz" | tar -xz -C "$INSTALL_DIR" --strip-components=1 || {
+            print_error "Failed to download repository"
+            exit 1
+        }
     fi
     
     print_info "Downloaded to $INSTALL_DIR"
