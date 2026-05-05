@@ -14,7 +14,8 @@
 # - Vim-style navigation and tiling controls
 ###############################################################################
 
-set -e
+# Don't exit on error - be bulletproof
+set +e
 
 # Colors for output
 RED='\033[0;31m'
@@ -119,37 +120,69 @@ backup_configs() {
     print_info "Backup created at: $BACKUP_DIR"
 }
 
-# Install Minty-I3 configurations
+# Install Minty-I3 configurations - bulletproof version
 install_configs() {
     print_info "Installing Minty-I3 configurations..."
     
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
     
+    print_info "Project root: $PROJECT_ROOT"
+    
+    # Verify project root exists
+    if [ ! -d "$PROJECT_ROOT/config" ]; then
+        print_error "Cannot find config directory at $PROJECT_ROOT/config"
+        print_error "Installation failed - config files not found"
+        exit 1
+    fi
+    
     # Create config directories
     mkdir -p "$HOME/.config/i3"
     mkdir -p "$HOME/.config/rofi"
     mkdir -p "$HOME/Screenshots"
     
-    # Copy configuration files
-    cp "$PROJECT_ROOT/config/i3/config" "$HOME/.config/i3/config"
-    cp "$PROJECT_ROOT/config/i3/Xresources" "$HOME/.Xresources"
-    cp "$PROJECT_ROOT/config/i3/i3status.conf" "$HOME/.config/i3status.conf"
-    cp "$PROJECT_ROOT/config/rofi/windows10.rasi" "$HOME/.config/rofi/windows10.rasi"
-    cp "$PROJECT_ROOT/config/picom.conf" "$HOME/.config/picom.conf"
-    cp "$PROJECT_ROOT/config/dunstrc" "$HOME/.config/dunstrc"
+    # Copy configuration files with error checking
+    print_info "Copying i3 config..."
+    cp "$PROJECT_ROOT/config/i3/config" "$HOME/.config/i3/config" || print_error "Failed to copy i3 config"
+    
+    print_info "Copying Xresources..."
+    cp "$PROJECT_ROOT/config/i3/Xresources" "$HOME/.Xresources" || print_error "Failed to copy Xresources"
+    
+    print_info "Copying i3status config..."
+    cp "$PROJECT_ROOT/config/i3/i3status.conf" "$HOME/.config/i3status.conf" || print_warn "Failed to copy i3status.conf"
+    
+    print_info "Copying rofi theme..."
+    cp "$PROJECT_ROOT/config/rofi/windows10.rasi" "$HOME/.config/rofi/windows10.rasi" || print_warn "Failed to copy rofi theme"
+    
+    print_info "Copying picom config..."
+    cp "$PROJECT_ROOT/config/picom.conf" "$HOME/.config/picom.conf" || print_warn "Failed to copy picom.conf"
+    
+    print_info "Copying dunst config..."
+    cp "$PROJECT_ROOT/config/dunstrc" "$HOME/.config/dunstrc" || print_warn "Failed to copy dunstrc"
     
     # Copy shortcuts script
-    cp "$PROJECT_ROOT/scripts/show-shortcuts.sh" "$HOME/.config/i3/show-shortcuts.sh"
-    chmod +x "$HOME/.config/i3/show-shortcuts.sh"
+    print_info "Copying shortcuts script..."
+    if [ -f "$PROJECT_ROOT/scripts/show-shortcuts.sh" ]; then
+        cp "$PROJECT_ROOT/scripts/show-shortcuts.sh" "$HOME/.config/i3/show-shortcuts.sh"
+        chmod +x "$HOME/.config/i3/show-shortcuts.sh"
+    else
+        print_warn "show-shortcuts.sh not found"
+    fi
     
     # Update i3 config with correct shortcuts path
-    sed -i "s|/home/d/CascadeProjects/Minty-I3/scripts/show-shortcuts.sh|$HOME/.config/i3/show-shortcuts.sh|g" "$HOME/.config/i3/config"
+    sed -i "s|/home/d/CascadeProjects/Minty-I3/scripts/show-shortcuts.sh|$HOME/.config/i3/show-shortcuts.sh|g" "$HOME/.config/i3/config" 2>/dev/null || true
     
     # Set permissions
     chmod +x "$HOME/.config/i3/config"
     
     print_info "Configurations installed successfully"
+    
+    # Verify installation
+    if [ -f "$HOME/.config/i3/config" ]; then
+        print_info "i3 config verified at ~/.config/i3/config"
+    else
+        print_error "i3 config NOT found - installation may have failed"
+    fi
 }
 
 # Apply Xresources
