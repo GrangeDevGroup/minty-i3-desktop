@@ -195,8 +195,37 @@ Features:
 - Multi-monitor support
 ```
 
+## Add Logo and Screenshot
+
+### Upload Logo
+
+1. Save your logo image as `logo.png` in the project folder
+2. Commit and push:
+   ```bash
+   git add logo.png
+   git commit -m "Add logo"
+   git push origin main
+   ```
+
+### Set GitHub Social Preview
+
+1. Go to https://github.com/GrangeDevGroup/minty-i3-desktop
+2. Click **Settings** → **General** → **Social preview**
+3. Click **Upload an image...**
+4. Select your `logo.png` file
+5. Click **Save changes**
+
+### Add Screenshot
+
+1. Take a screenshot of Minty-I3 running
+2. Save as `screenshot.png`
+3. Update README.md:
+   ```markdown
+   ![Minty-I3 Desktop](screenshot.png)
+   ```
+4. Commit and push
+
 ## Next Steps
 
-- [ ] Add screenshot to README
 - [ ] Share on Reddit r/i3wm, r/linuxmint
 - [ ] Add to awesome-i3 list

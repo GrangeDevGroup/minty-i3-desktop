@@ -1,10 +1,12 @@
-# Minty-I3
-
-![Linux Mint](https://img.shields.io/badge/Linux%20Mint-20%2F21%2F22-green?logo=linux-mint)
-![i3wm](https://img.shields.io/badge/i3wm-tiling-blue)
-![License](https://img.shields.io/badge/license-MIT-blue)
-
-Linux Mint Dark Theme i3 Window Manager for Linux Mint. Inspired by Regolith Linux and Manjaro Sway.
+<div align="center">
+  <img src="logo.png" alt="Minty-I3 Logo" width="200">
+  <h1>Minty-I3</h1>
+  <p>Linux Mint Dark Theme i3 Window Manager</p>
+  
+  ![Linux Mint](https://img.shields.io/badge/Linux%20Mint-20%2F21%2F22-green?logo=linux-mint)
+  ![i3wm](https://img.shields.io/badge/i3wm-tiling-blue)
+  ![License](https://img.shields.io/badge/license-MIT-blue)
+</div>
 
 **One-line installation:**
 ```bash
