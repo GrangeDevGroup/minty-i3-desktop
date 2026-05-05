@@ -88,7 +88,7 @@ ask_remove_packages() {
             blueman \
             network-manager-gnome \
             volumeicon-alsa \
-            clipit
+            diodon
     else
         print_info "Keeping packages installed"
     fi

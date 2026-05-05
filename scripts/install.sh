@@ -91,7 +91,7 @@ install_i3() {
     print_info "Installing i3 window manager and dependencies..."
     
     # Essential packages (must have)
-    local essential="i3 i3-wm i3status i3lock rofi picom dunst nitrogen feh scrot xsel xfce4-terminal lxappearance arandr blueman network-manager-gnome volumeicon-alsa clipit yad zenity playerctl brightnessctl pulseaudio-utils xdotool x11-xserver-utils cinnamon-session policykit-1-gnome"
+    local essential="i3 i3-wm i3status i3lock rofi picom dunst nitrogen feh scrot xsel xfce4-terminal lxappearance arandr blueman network-manager-gnome volumeicon-alsa diodon yad zenity playerctl brightnessctl pulseaudio-utils xdotool x11-xserver-utils cinnamon-session policykit-1-gnome"
     
     # Optional packages (nice to have, skip if not found)
     local optional="i3blocks suckless-tools rxvt-unicode fonts-noto fonts-firacode"
@@ -319,8 +319,8 @@ if command -v blueman-applet &> /dev/null; then
 fi
 
 # Start clipboard manager
-if command -v clipit &> /dev/null; then
-    clipit &
+if command -v diodon &> /dev/null; then
+    diodon &
 fi
 
 # Start volume icon

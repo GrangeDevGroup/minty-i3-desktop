@@ -92,7 +92,10 @@ hr {
 <div class="shortcut"><span class="key">${WIN_LOGO}+Shift+r</span><span class="action">Restart i3</span></div>
 <div class="shortcut"><span class="key">${WIN_LOGO}+Shift+c</span><span class="action">Reload config</span></div>
 <div class="shortcut"><span class="key">${WIN_LOGO}+Shift+s</span><span class="action">Suspend</span></div>
-<div class="shortcut"><span class="key">${WIN_LOGO}+Shift+l</span><span class="action">Lock screen</span></div>
+<div class="shortcut"><span class="key">${WIN_LOGO}+Shift+x</span><span class="action">Lock screen</span></div>
+<div class="shortcut"><span class="key">${WIN_LOGO}+Shift+Ctrl+s</span><span class="action">Hibernate</span></div>
+<div class="shortcut"><span class="key">${WIN_LOGO}+Shift+Ctrl+l</span><span class="action">Power off</span></div>
+<div class="shortcut"><span class="key">${WIN_LOGO}+Shift+Ctrl+r</span><span class="action">Reboot</span></div>
 
 <hr>
 
@@ -138,6 +141,17 @@ hr {
 <h2>Resize</h2>
 <div class="shortcut"><span class="key">${WIN_LOGO}+r</span><span class="action">Resize mode</span></div>
 <div class="shortcut"><span class="key">Arrow keys</span><span class="action">Resize window</span></div>
+
+<hr>
+
+<h2>Media Keys</h2>
+<div class="shortcut"><span class="key">Volume Up</span><span class="action">Increase volume (+5%)</span></div>
+<div class="shortcut"><span class="key">Volume Down</span><span class="action">Decrease volume (-5%)</span></div>
+<div class="shortcut"><span class="key">Volume Mute</span><span class="action">Toggle mute</span></div>
+<div class="shortcut"><span class="key">Brightness Up</span><span class="action">Increase brightness (+5%)</span></div>
+<div class="shortcut"><span class="key">Brightness Down</span><span class="action">Decrease brightness (-5%)</span></div>
+<div class="shortcut"><span class="key">Play/Pause</span><span class="action">Media play/pause</span></div>
+<div class="shortcut"><span class="key">Next/Prev</span><span class="action">Media next/previous</span></div>
 
 <hr>
 

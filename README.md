@@ -62,7 +62,7 @@ sudo apt update
 sudo apt install -y i3 i3-wm i3status i3lock i3blocks suckless-tools \
     rofi picom dunst nitrogen feh scrot xsel xfce4-terminal \
     fonts-noto lxappearance arandr blueman network-manager-gnome \
-    volumeicon-alsa clipit yad zenity playerctl brightnessctl \
+    volumeicon-alsa diodon yad zenity playerctl brightnessctl \
     pulseaudio-utils xdotool
 ```
 

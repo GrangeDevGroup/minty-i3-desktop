@@ -83,7 +83,7 @@ remove_packages() {
     print_step "Removing packages..."
     
     # List of packages to remove
-    PACKAGES="i3 i3-wm i3status i3lock rofi picom dunst nitrogen feh scrot xsel xfce4-terminal lxappearance arandr blueman network-manager-gnome volumeicon-alsa clipit yad zenity playerctl brightnessctl pulseaudio-utils xdotool x11-xserver-utils cinnamon-session policykit-1-gnome"
+    PACKAGES="i3 i3-wm i3status i3lock rofi picom dunst nitrogen feh scrot xsel xfce4-terminal lxappearance arandr blueman network-manager-gnome volumeicon-alsa diodon yad zenity playerctl brightnessctl pulseaudio-utils xdotool x11-xserver-utils cinnamon-session policykit-1-gnome"
     
     for pkg in $PACKAGES; do
         if dpkg -l | grep -q "^ii  $pkg"; then
