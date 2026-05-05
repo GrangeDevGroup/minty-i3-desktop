@@ -127,11 +127,18 @@ install_configs() {
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
     
+    print_info "Script directory: $SCRIPT_DIR"
     print_info "Project root: $PROJECT_ROOT"
+    
+    # Debug: Show what files exist
+    print_info "Checking for config files..."
+    ls -la "$PROJECT_ROOT/" 2>/dev/null || print_error "Cannot list project root"
     
     # Verify project root exists
     if [ ! -d "$PROJECT_ROOT/config" ]; then
         print_error "Cannot find config directory at $PROJECT_ROOT/config"
+        print_error "Contents of $PROJECT_ROOT:"
+        ls -la "$PROJECT_ROOT/" 2>/dev/null || print_error "Directory empty or inaccessible"
         print_error "Installation failed - config files not found"
         exit 1
     fi
