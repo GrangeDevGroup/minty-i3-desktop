@@ -39,7 +39,7 @@ default_border pixel 2
 gaps inner 8
 gaps outer 4
 
-# Keybindings - Manjaro Sway Style
+# Keybindings 
 bindsym $mod+Return exec --no-startup-id xfce4-terminal
 bindsym $mod+Shift+Return exec --no-startup-id xfce4-terminal --drop-down
 bindsym $mod+Shift+q kill
@@ -49,7 +49,7 @@ bindsym $mod+Shift+e exec --no-startup-id i3-nagbar -t warning -m 'Exit i3?' -B 
 bindsym $mod+Shift+question exec --no-startup-id ~/.config/i3/show-shortcuts.sh
 bindsym $mod+F1 exec --no-startup-id ~/.config/i3/show-shortcuts.sh
 
-# Focus - Manjaro Sway Style (vim keys + arrows)
+# Focus - (vim keys + arrows)
 bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
@@ -59,7 +59,7 @@ bindsym $mod+j focus down
 bindsym $mod+k focus up
 bindsym $mod+l focus right
 
-# Move - Manjaro Sway Style
+# Move 
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
@@ -69,7 +69,7 @@ bindsym $mod+Shift+j move down
 bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
-# Layout - Manjaro Sway Style
+# Layout 
 bindsym $mod+b splith
 bindsym $mod+v splitv
 bindsym $mod+s layout stacking
@@ -79,7 +79,7 @@ bindsym $mod+f fullscreen toggle
 bindsym $mod+Shift+space floating toggle
 bindsym $mod+space focus mode_toggle
 
-# Scratchpad - Manjaro Sway Style
+# Scratchpad
 bindsym $mod+Shift+minus move scratchpad
 bindsym $mod+minus scratchpad show
 
@@ -111,7 +111,7 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
-# Reload/restart - Manjaro Sway Style
+# Reload/restart 
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+s exec --no-startup-id systemctl suspend
@@ -120,7 +120,7 @@ bindsym $mod+Shift+l exec --no-startup-id i3lock -c 000000
 bindsym $mod+Shift+Shift+l exec --no-startup-id systemctl poweroff
 bindsym $mod+Shift+Shift+r exec --no-startup-id systemctl reboot
 
-# Media keys - Manjaro Sway Style
+# Media keys 
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5%
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5%
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle

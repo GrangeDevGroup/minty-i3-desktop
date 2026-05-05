@@ -2,14 +2,14 @@
 ###############################################################################
 # Minty-I3 Shortcuts Display Script
 # Shows keyboard shortcuts on the left side of the screen
-# Similar to Manjaro Sway's Super+Shift+? feature with Windows logo
+# Displays shortcuts panel on left side of screen
 ###############################################################################
 
 # Get screen dimensions
 SCREEN_WIDTH=$(xdpyinfo | grep 'dimensions:' | awk '{print $2}' | cut -d'x' -f1)
 SCREEN_HEIGHT=$(xdpyinfo | grep 'dimensions:' | awk '{print $2}' | cut -d'x' -f2)
 
-# Window size and position (left side like Manjaro Sway)
+# Window size and position (left side panel)
 WINDOW_WIDTH=400
 WINDOW_HEIGHT=$((SCREEN_HEIGHT - 100))
 POS_X=50

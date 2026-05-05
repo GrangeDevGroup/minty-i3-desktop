@@ -1,6 +1,6 @@
 # Minty-I3 Keybindings
 
-Complete list of default keybindings for Minty-I3 (Manjaro Sway Style).
+Complete list of default keybindings for Minty-I3.
 
 ## Modifier Keys
 

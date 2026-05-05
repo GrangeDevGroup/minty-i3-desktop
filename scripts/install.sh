@@ -11,7 +11,7 @@
 # - Cinnamon-Flashback session support (optional)
 # - Multi-monitor workspace autonomy
 # - Linux Mint services integration
-# - Manjaro Sway-style keybindings
+# - Vim-style navigation and tiling controls
 ###############################################################################
 
 set -e

@@ -1,7 +1,7 @@
 <div align="center">
   <img src="logo.png" alt="Minty-I3 Logo" width="200">
   <h1>Minty-I3</h1>
-  <p>Linux Mint Dark Theme i3 Window Manager</p>
+  <p>A Linux Mint-focused i3 window manager setup with dark theme and optimized keybindings.</p>
   
   ![Linux Mint](https://img.shields.io/badge/Linux%20Mint-20%2F21%2F22-green?logo=linux-mint)
   ![i3wm](https://img.shields.io/badge/i3wm-tiling-blue)
@@ -19,7 +19,7 @@ curl -sSL https://raw.githubusercontent.com/GrangeDevGroup/minty-i3-desktop/main
 
 - Linux Mint Dark Theme colors (green accent #87cf3e)
 - i3 tiling window manager
-- Manjaro Sway-style keyboard shortcuts
+- Vim-style navigation with intuitive keybindings
 - **Left-side shortcuts display** (press Super+Shift+? or Super+F1)
 - Windows logo (⊞) instead of Manjaro logo
 - Easy installation - works alongside or replaces Cinnamon
@@ -93,7 +93,7 @@ Log out and select "Minty-I3" from the login screen session menu.
 
 ## Keybindings
 
-Minty-I3 uses Manjaro Sway-style keybindings with Windows logo (⊞):
+Minty-I3 uses Windows-centric keybindings with the Windows/Super key (⊞):
 
 | Keybinding | Action |
 |------------|--------|
@@ -113,9 +113,9 @@ See [docs/KEYBINDINGS.md](docs/KEYBINDINGS.md) for complete list.
 
 ## Shortcuts Panel
 
-Press `Super+Shift+?` or `Super+F1` to display the keyboard shortcuts panel on the **left side** of the screen, similar to Manjaro Sway. The panel features:
+Press `Super+Shift+?` or `Super+F1` to display the keyboard shortcuts panel on the **left side** of the screen. The panel features:
 
-- Windows logo (⊞) instead of Manjaro logo
+- Windows logo (⊞) for the Super key
 - Linux Mint green accent colors
 - Organized by category (System, Windows, Navigation, Layout, etc.)
 - Auto-closes after 30 seconds or click to close
