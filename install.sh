@@ -59,8 +59,8 @@ check_mint() {
 # Install dependencies (git)
 install_deps() {
     print_step "Installing required dependencies..."
-    apt-get update -qq
-    apt-get install -y -qq git curl wget
+    apt-get update
+    apt-get install -y git curl wget
 }
 
 # Download repository
