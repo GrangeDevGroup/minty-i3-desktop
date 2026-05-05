@@ -65,60 +65,43 @@ update_system() {
     apt upgrade -y
 }
 
-# Install i3 and dependencies
+# Install i3 and dependencies - bulletproof version
 install_i3() {
     print_info "Installing i3 window manager and dependencies..."
-    apt install -y \
-        i3 \
-        i3-wm \
-        i3status \
-        i3lock \
-        i3blocks \
-        suckless-tools \
-        rofi \
-        picom \
-        dunst \
-        nitrogen \
-        feh \
-        scrot \
-        xsel \
-        rxvt-unicode \
-        xfce4-terminal \
-        fonts-noto \
-        fonts-segoeui \
-        fonts-firacode \
-        lxappearance \
-        arandr \
-        blueman \
-        network-manager-gnome \
-        volumeicon-alsa \
-        clipit \
-        yad \
-        zenity \
-        playerctl \
-        brightnessctl \
-        pulseaudio-utils \
-        xdotool \
-        x11-xserver-utils \
-        cinnamon-session \
-        policykit-1-gnome
+    
+    # Essential packages (must have)
+    local essential="i3 i3-wm i3status i3lock rofi picom dunst nitrogen feh scrot xsel xfce4-terminal lxappearance arandr blueman network-manager-gnome volumeicon-alsa clipit yad zenity playerctl brightnessctl pulseaudio-utils xdotool x11-xserver-utils cinnamon-session policykit-1-gnome"
+    
+    # Optional packages (nice to have, skip if not found)
+    local optional="i3blocks suckless-tools rxvt-unicode fonts-noto fonts-firacode"
+    
+    print_info "Installing essential packages..."
+    for pkg in $essential; do
+        if apt-cache show "$pkg" > /dev/null 2>&1; then
+            apt install -y "$pkg" || print_warn "Failed to install $pkg, continuing..."
+        else
+            print_warn "Package $pkg not found in repository, skipping..."
+        fi
+    done
+    
+    print_info "Installing optional packages..."
+    for pkg in $optional; do
+        if apt-cache show "$pkg" > /dev/null 2>&1; then
+            apt install -y "$pkg" 2>/dev/null || print_warn "Optional package $pkg not installed"
+        fi
+    done
 }
 
-# Install additional useful packages
+# Install additional useful packages - bulletproof
 install_extra() {
     print_info "Installing additional useful packages..."
-    apt install -y \
-        vim \
-        git \
-        curl \
-        wget \
-        htop \
-        neofetch \
-        playerctl \
-        pavucontrol \
-        thunar \
-        thunar-archive-plugin \
-        xarchiver
+    local extra="vim git curl wget htop neofetch pavucontrol thunar thunar-archive-plugin xarchiver"
+    
+    for pkg in $extra; do
+        if apt-cache show "$pkg" > /dev/null 2>&1; then
+            apt install -y "$pkg" 2>/dev/null || print_warn "Could not install $pkg"
+        fi
+    done
 }
 
 # Create backup of existing configs
