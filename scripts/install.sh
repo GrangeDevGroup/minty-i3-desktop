@@ -141,29 +141,39 @@ install_configs() {
     mkdir -p "$HOME/.config/rofi"
     mkdir -p "$HOME/Screenshots"
     
-    # Copy configuration files with error checking
+    # Remove old configs to ensure fresh install (force update)
+    print_info "Removing old configurations for fresh install..."
+    rm -f "$HOME/.config/i3/config"
+    rm -f "$HOME/.Xresources"
+    rm -f "$HOME/.config/i3status.conf"
+    rm -f "$HOME/.config/rofi/windows10.rasi"
+    rm -f "$HOME/.config/picom.conf"
+    rm -f "$HOME/.config/dunstrc"
+    rm -f "$HOME/.config/i3/show-shortcuts.sh"
+    
+    # Copy configuration files with force flag
     print_info "Copying i3 config..."
-    cp "$PROJECT_ROOT/config/i3/config" "$HOME/.config/i3/config" || print_error "Failed to copy i3 config"
+    cp -f "$PROJECT_ROOT/config/i3/config" "$HOME/.config/i3/config" || print_error "Failed to copy i3 config"
     
     print_info "Copying Xresources..."
-    cp "$PROJECT_ROOT/config/i3/Xresources" "$HOME/.Xresources" || print_error "Failed to copy Xresources"
+    cp -f "$PROJECT_ROOT/config/i3/Xresources" "$HOME/.Xresources" || print_error "Failed to copy Xresources"
     
     print_info "Copying i3status config..."
-    cp "$PROJECT_ROOT/config/i3/i3status.conf" "$HOME/.config/i3status.conf" || print_warn "Failed to copy i3status.conf"
+    cp -f "$PROJECT_ROOT/config/i3/i3status.conf" "$HOME/.config/i3status.conf" || print_warn "Failed to copy i3status.conf"
     
     print_info "Copying rofi theme..."
-    cp "$PROJECT_ROOT/config/rofi/windows10.rasi" "$HOME/.config/rofi/windows10.rasi" || print_warn "Failed to copy rofi theme"
+    cp -f "$PROJECT_ROOT/config/rofi/windows10.rasi" "$HOME/.config/rofi/windows10.rasi" || print_warn "Failed to copy rofi theme"
     
     print_info "Copying picom config..."
-    cp "$PROJECT_ROOT/config/picom.conf" "$HOME/.config/picom.conf" || print_warn "Failed to copy picom.conf"
+    cp -f "$PROJECT_ROOT/config/picom.conf" "$HOME/.config/picom.conf" || print_warn "Failed to copy picom.conf"
     
     print_info "Copying dunst config..."
-    cp "$PROJECT_ROOT/config/dunstrc" "$HOME/.config/dunstrc" || print_warn "Failed to copy dunstrc"
+    cp -f "$PROJECT_ROOT/config/dunstrc" "$HOME/.config/dunstrc" || print_warn "Failed to copy dunstrc"
     
     # Copy shortcuts script
     print_info "Copying shortcuts script..."
     if [ -f "$PROJECT_ROOT/scripts/show-shortcuts.sh" ]; then
-        cp "$PROJECT_ROOT/scripts/show-shortcuts.sh" "$HOME/.config/i3/show-shortcuts.sh"
+        cp -f "$PROJECT_ROOT/scripts/show-shortcuts.sh" "$HOME/.config/i3/show-shortcuts.sh"
         chmod +x "$HOME/.config/i3/show-shortcuts.sh"
     else
         print_warn "show-shortcuts.sh not found"
@@ -185,10 +195,13 @@ install_configs() {
     fi
 }
 
-# Apply Xresources
+# Apply Xresources - force reload
 apply_xresources() {
     print_info "Applying Xresources..."
+    # Clear and reload Xresources
+    xrdb -remove 2>/dev/null || true
     xrdb -merge "$HOME/.Xresources"
+    print_info "Xresources applied"
 }
 
 # Create autostart script
@@ -366,6 +379,15 @@ main() {
     create_autostart
     create_session_entry
     print_completion
+    
+    # Restart i3 if running to apply new config immediately
+    if pgrep -x "i3" > /dev/null; then
+        print_info "i3 is running. Restarting to apply new config..."
+        print_info "Press Mod+Shift+r to restart i3 manually, or log out and back in."
+        # Try to reload i3 config
+        su - "$SUDO_USER" -c "i3-msg reload" 2>/dev/null || true
+        su - "$SUDO_USER" -c "i3-msg restart" 2>/dev/null || true
+    fi
 }
 
 # Run main function
