@@ -116,17 +116,8 @@ main() {
     
     print_info "This will install Minty-I3 on your system."
     print_warn "Make sure you have a backup of your current config!"
-    echo ""
-    
-    # Optional: Ask for confirmation (can be skipped with -y flag)
-    if [[ "$1" != "-y" && "$1" != "--yes" ]]; then
-        read -p "Continue with installation? [Y/n]: " -n 1 -r
-        echo
-        if [[ ! $REPLY =~ ^[Yy]$ && ! -z $REPLY ]]; then
-            print_info "Installation cancelled by user"
-            exit 0
-        fi
-    fi
+    print_info "Starting installation in 3 seconds... (Ctrl+C to cancel)"
+    sleep 3
     
     install_deps
     download_repo
