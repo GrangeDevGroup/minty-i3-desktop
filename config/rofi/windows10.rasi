@@ -20,7 +20,7 @@ window {
     border-radius: 0;
     padding: 10;
     width: 600;
-    font: "Segoe UI 10";
+    font: "DejaVu Sans 10";
 }
 
 mainbox {

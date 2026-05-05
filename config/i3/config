@@ -1,6 +1,6 @@
 ###############################################################################
 # Minty-I3 Configuration File
-# Windows 10 Dark Theme for Linux Mint
+# Linux Mint Dark Theme i3 Window Manager
 ###############################################################################
 
 set $mod Mod4
@@ -19,7 +19,7 @@ client.focused_inactive #2d2d2d #1a1a1a #e0e0e0 #2d2d2d #2d2d2d
 client.unfocused        #2d2d2d #1a1a1a #888888 #2d2d2d #2d2d2d
 client.urgent           #e74c3c #1a1a1a #ffffff #e74c3c #e74c3c
 
-font pango:Segoe UI 10
+font pango:DejaVu Sans 10
 
 # Workspace names
 set $ws1 "1"
@@ -214,6 +214,9 @@ assign [class="Steam"] $ws8
 
 # Startup applications - using autostart script
 exec --no-startup-id ~/.config/i3/autostart.sh
+
+# Show notification that Minty-I3 is loaded (visual confirmation)
+exec --no-startup-id sleep 2 && notify-send "Minty-I3 Loaded" "Linux Mint Dark Theme Active" -i dialog-information
 
 # Cinnamon Integration (optional)
 # These services run in the background for better Mint integration
