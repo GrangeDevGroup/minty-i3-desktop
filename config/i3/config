@@ -139,7 +139,7 @@ bindsym XF86AudioPrev exec --no-startup-id playerctl previous
 bindsym XF86MonBrightnessUp exec --no-startup-id bash -c 'brightnessctl set +5%; CURRENT=$(brightnessctl get); MAX=$(brightnessctl max); PERCENT=$((CURRENT * 100 / MAX)); notify-send -t 1000 "Brightness" "Level: ${PERCENT}%"'
 
 # Brightness down - shows notification with current level
-bindsym XF86MonBrightnessDown exec --no-startup-id bash -c 'brightnessctl set 5%-; CURRENT=$(brightnessctl get); MAX=$(brightnessctl max); PERCENT=$((CURRENT * 100 / MAX)); notify-send -t 1000 "Brightness" "Level: ${PERCENT}%"
+bindsym XF86MonBrightnessDown exec --no-startup-id bash -c 'brightnessctl set 5%-; CURRENT=$(brightnessctl get); MAX=$(brightnessctl max); PERCENT=$((CURRENT * 100 / MAX)); notify-send -t 1000 "Brightness" "Level: ${PERCENT}%"'
 bindsym Print exec --no-startup-id scrot $HOME/Screenshots/%Y-%m-%d-%H-%M-%S.png
 bindsym $mod+Print exec --no-startup-id scrot -u $HOME/Screenshots/%Y-%m-%d-%H-%M-%S.png
 bindsym $mod+Shift+Print exec --no-startup-id scrot -s $HOME/Screenshots/%Y-%m-%d-%H-%M-%S.png
