@@ -21,7 +21,7 @@ curl -sSL https://raw.githubusercontent.com/GrangeDevGroup/minty-i3-desktop/main
 - i3 tiling window manager
 - Vim-style navigation with intuitive keybindings
 - **Left-side shortcuts display** (press Super+Shift+? or Super+F1)
-- Windows logo (⊞) instead of Manjaro logo
+- Windows logo (⊞) for the Super key
 - Easy installation - works alongside or replaces Cinnamon
 - Complete desktop setup with notifications, compositor, and applets
 
