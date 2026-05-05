@@ -115,10 +115,10 @@ bindsym $mod+Shift+0 move container to workspace number $ws10
 bindsym $mod+Shift+c reload
 bindsym $mod+Shift+r restart
 bindsym $mod+Shift+s exec --no-startup-id systemctl suspend
-bindsym $mod+Shift+Shift+s exec --no-startup-id systemctl hibernate
+bindsym $mod+Shift+Ctrl+s exec --no-startup-id systemctl hibernate
 bindsym $mod+Shift+l exec --no-startup-id i3lock -c 000000
-bindsym $mod+Shift+Shift+l exec --no-startup-id systemctl poweroff
-bindsym $mod+Shift+Shift+r exec --no-startup-id systemctl reboot
+bindsym $mod+Shift+Ctrl+l exec --no-startup-id systemctl poweroff
+bindsym $mod+Shift+Ctrl+r exec --no-startup-id systemctl reboot
 
 # Media keys with visual notifications
 # Volume up - shows notification with current level

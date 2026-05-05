@@ -44,6 +44,26 @@ check_root() {
     fi
 }
 
+# Get the actual user's home directory (not root's)
+get_user_home() {
+    if [ -n "$SUDO_USER" ]; then
+        # Get home directory of the user who ran sudo
+        REAL_HOME=$(getent passwd "$SUDO_USER" | cut -d: -f6)
+        echo "$REAL_HOME"
+    else
+        echo "$HOME"
+    fi
+}
+
+# Get the actual user name
+get_user_name() {
+    if [ -n "$SUDO_USER" ]; then
+        echo "$SUDO_USER"
+    else
+        echo "$USER"
+    fi
+}
+
 # Check Linux Mint version
 check_mint() {
     if [ ! -f /etc/os-release ]; then
@@ -107,115 +127,138 @@ install_extra() {
 
 # Create backup of existing configs
 backup_configs() {
-    print_info "Backing up existing configurations..."
-    BACKUP_DIR="$HOME/.config/minty-i3-backup-$(date +%Y%m%d-%H%M%S)"
+    local USER_HOME=$(get_user_home)
+    local USER_NAME=$(get_user_name)
+    
+    print_info "Backing up existing configurations for user: $USER_NAME"
+    BACKUP_DIR="$USER_HOME/.config/minty-i3-backup-$(date +%Y%m%d-%H%M%S)"
     mkdir -p "$BACKUP_DIR"
     
-    [ -d "$HOME/.config/i3" ] && cp -r "$HOME/.config/i3" "$BACKUP_DIR/" 2>/dev/null || true
-    [ -f "$HOME/.Xresources" ] && cp "$HOME/.Xresources" "$BACKUP_DIR/" 2>/dev/null || true
-    [ -d "$HOME/.config/rofi" ] && cp -r "$HOME/.config/rofi" "$BACKUP_DIR/" 2>/dev/null || true
-    [ -f "$HOME/.config/picom.conf" ] && cp "$HOME/.config/picom.conf" "$BACKUP_DIR/" 2>/dev/null || true
-    [ -f "$HOME/.config/dunstrc" ] && cp "$HOME/.config/dunstrc" "$BACKUP_DIR/" 2>/dev/null || true
+    [ -d "$USER_HOME/.config/i3" ] && cp -r "$USER_HOME/.config/i3" "$BACKUP_DIR/" 2>/dev/null || true
+    [ -f "$USER_HOME/.Xresources" ] && cp "$USER_HOME/.Xresources" "$BACKUP_DIR/" 2>/dev/null || true
+    [ -d "$USER_HOME/.config/rofi" ] && cp -r "$USER_HOME/.config/rofi" "$BACKUP_DIR/" 2>/dev/null || true
+    [ -f "$USER_HOME/.config/picom.conf" ] && cp "$USER_HOME/.config/picom.conf" "$BACKUP_DIR/" 2>/dev/null || true
+    [ -f "$USER_HOME/.config/dunstrc" ] && cp "$USER_HOME/.config/dunstrc" "$BACKUP_DIR/" 2>/dev/null || true
     
     print_info "Backup created at: $BACKUP_DIR"
 }
 
 # Install Minty-I3 configurations - bulletproof version
 install_configs() {
-    print_info "Installing Minty-I3 configurations..."
+    local USER_HOME=$(get_user_home)
+    local USER_NAME=$(get_user_name)
+    
+    print_info "Installing Minty-I3 configurations for user: $USER_NAME"
+    print_info "Target directory: $USER_HOME"
     
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
     PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
     
-    print_info "Script directory: $SCRIPT_DIR"
-    print_info "Project root: $PROJECT_ROOT"
-    
-    # Debug: Show what files exist
-    print_info "Checking for config files..."
-    ls -la "$PROJECT_ROOT/" 2>/dev/null || print_error "Cannot list project root"
+    print_info "Source directory: $PROJECT_ROOT"
     
     # Verify project root exists
     if [ ! -d "$PROJECT_ROOT/config" ]; then
         print_error "Cannot find config directory at $PROJECT_ROOT/config"
-        print_error "Contents of $PROJECT_ROOT:"
-        ls -la "$PROJECT_ROOT/" 2>/dev/null || print_error "Directory empty or inaccessible"
         print_error "Installation failed - config files not found"
         exit 1
     fi
     
     # Create config directories
-    mkdir -p "$HOME/.config/i3"
-    mkdir -p "$HOME/.config/rofi"
-    mkdir -p "$HOME/Screenshots"
+    mkdir -p "$USER_HOME/.config/i3"
+    mkdir -p "$USER_HOME/.config/rofi"
+    mkdir -p "$USER_HOME/Screenshots"
     
     # Remove old configs to ensure fresh install (force update)
-    print_info "Removing old configurations for fresh install..."
-    rm -f "$HOME/.config/i3/config"
-    rm -f "$HOME/.Xresources"
-    rm -f "$HOME/.config/i3status.conf"
-    rm -f "$HOME/.config/rofi/windows10.rasi"
-    rm -f "$HOME/.config/picom.conf"
-    rm -f "$HOME/.config/dunstrc"
-    rm -f "$HOME/.config/i3/show-shortcuts.sh"
+    print_info "Removing old configurations..."
+    rm -f "$USER_HOME/.config/i3/config"
+    rm -f "$USER_HOME/.Xresources"
+    rm -f "$USER_HOME/.config/i3status.conf"
+    rm -f "$USER_HOME/.config/rofi/windows10.rasi"
+    rm -f "$USER_HOME/.config/picom.conf"
+    rm -f "$USER_HOME/.config/dunstrc"
+    rm -f "$USER_HOME/.config/i3/show-shortcuts.sh"
     
     # Copy configuration files with force flag
     print_info "Copying i3 config..."
-    cp -f "$PROJECT_ROOT/config/i3/config" "$HOME/.config/i3/config" || print_error "Failed to copy i3 config"
+    cp -f "$PROJECT_ROOT/config/i3/config" "$USER_HOME/.config/i3/config" || print_error "Failed to copy i3 config"
     
     print_info "Copying Xresources..."
-    cp -f "$PROJECT_ROOT/config/i3/Xresources" "$HOME/.Xresources" || print_error "Failed to copy Xresources"
+    cp -f "$PROJECT_ROOT/config/i3/Xresources" "$USER_HOME/.Xresources" || print_error "Failed to copy Xresources"
     
     print_info "Copying i3status config..."
-    cp -f "$PROJECT_ROOT/config/i3/i3status.conf" "$HOME/.config/i3status.conf" || print_warn "Failed to copy i3status.conf"
+    cp -f "$PROJECT_ROOT/config/i3/i3status.conf" "$USER_HOME/.config/i3status.conf" || print_warn "Failed to copy i3status.conf"
     
     print_info "Copying rofi theme..."
-    cp -f "$PROJECT_ROOT/config/rofi/windows10.rasi" "$HOME/.config/rofi/windows10.rasi" || print_warn "Failed to copy rofi theme"
+    cp -f "$PROJECT_ROOT/config/rofi/windows10.rasi" "$USER_HOME/.config/rofi/windows10.rasi" || print_warn "Failed to copy rofi theme"
     
     print_info "Copying picom config..."
-    cp -f "$PROJECT_ROOT/config/picom.conf" "$HOME/.config/picom.conf" || print_warn "Failed to copy picom.conf"
+    cp -f "$PROJECT_ROOT/config/picom.conf" "$USER_HOME/.config/picom.conf" || print_warn "Failed to copy picom.conf"
     
     print_info "Copying dunst config..."
-    cp -f "$PROJECT_ROOT/config/dunstrc" "$HOME/.config/dunstrc" || print_warn "Failed to copy dunstrc"
+    cp -f "$PROJECT_ROOT/config/dunstrc" "$USER_HOME/.config/dunstrc" || print_warn "Failed to copy dunstrc"
     
     # Copy shortcuts script
     print_info "Copying shortcuts script..."
     if [ -f "$PROJECT_ROOT/scripts/show-shortcuts.sh" ]; then
-        cp -f "$PROJECT_ROOT/scripts/show-shortcuts.sh" "$HOME/.config/i3/show-shortcuts.sh"
-        chmod +x "$HOME/.config/i3/show-shortcuts.sh"
+        cp -f "$PROJECT_ROOT/scripts/show-shortcuts.sh" "$USER_HOME/.config/i3/show-shortcuts.sh"
+        chmod +x "$USER_HOME/.config/i3/show-shortcuts.sh"
     else
         print_warn "show-shortcuts.sh not found"
     fi
     
     # Update i3 config with correct shortcuts path
-    sed -i "s|/home/d/CascadeProjects/Minty-I3/scripts/show-shortcuts.sh|$HOME/.config/i3/show-shortcuts.sh|g" "$HOME/.config/i3/config" 2>/dev/null || true
+    sed -i "s|/home/d/CascadeProjects/Minty-I3/scripts/show-shortcuts.sh|$USER_HOME/.config/i3/show-shortcuts.sh|g" "$USER_HOME/.config/i3/config" 2>/dev/null || true
+    
+    # Set ownership to the user (not root)
+    if [ -n "$SUDO_USER" ]; then
+        chown -R "$SUDO_USER:$SUDO_USER" "$USER_HOME/.config/i3" 2>/dev/null || true
+        chown "$SUDO_USER:$SUDO_USER" "$USER_HOME/.Xresources" 2>/dev/null || true
+        chown -R "$SUDO_USER:$SUDO_USER" "$USER_HOME/.config/rofi" 2>/dev/null || true
+        chown "$SUDO_USER:$SUDO_USER" "$USER_HOME/.config/picom.conf" 2>/dev/null || true
+        chown "$SUDO_USER:$SUDO_USER" "$USER_HOME/.config/dunstrc" 2>/dev/null || true
+        chown "$SUDO_USER:$SUDO_USER" "$USER_HOME/.config/i3status.conf" 2>/dev/null || true
+    fi
     
     # Set permissions
-    chmod +x "$HOME/.config/i3/config"
+    chmod +x "$USER_HOME/.config/i3/config"
     
     print_info "Configurations installed successfully"
     
     # Verify installation
-    if [ -f "$HOME/.config/i3/config" ]; then
-        print_info "i3 config verified at ~/.config/i3/config"
+    if [ -f "$USER_HOME/.config/i3/config" ]; then
+        print_info "i3 config verified at $USER_HOME/.config/i3/config"
     else
-        print_error "i3 config NOT found - installation may have failed"
+        print_error "i3 config NOT found - installation failed"
     fi
 }
 
 # Apply Xresources - force reload
 apply_xresources() {
-    print_info "Applying Xresources..."
+    local USER_HOME=$(get_user_home)
+    local USER_NAME=$(get_user_name)
+    
+    print_info "Applying Xresources for user: $USER_NAME"
     # Clear and reload Xresources
     xrdb -remove 2>/dev/null || true
-    xrdb -merge "$HOME/.Xresources"
+    
+    # Run as the actual user, not root
+    if [ -n "$SUDO_USER" ]; then
+        su - "$SUDO_USER" -c "xrdb -merge $USER_HOME/.Xresources" 2>/dev/null || xrdb -merge "$USER_HOME/.Xresources"
+    else
+        xrdb -merge "$USER_HOME/.Xresources"
+    fi
+    
     print_info "Xresources applied"
 }
 
 # Create autostart script
 create_autostart() {
-    print_info "Creating autostart script..."
+    local USER_HOME=$(get_user_home)
+    local USER_NAME=$(get_user_name)
     
-    cat > "$HOME/.config/i3/autostart.sh" << 'EOF'
+    print_info "Creating autostart script for user: $USER_NAME"
+    
+    cat > "$USER_HOME/.config/i3/autostart.sh" << 'EOF'
 #!/bin/bash
 # Minty-I3 Autostart Script
 # This script runs automatically when i3 starts
@@ -294,7 +337,12 @@ fi
 sleep 2 && notify-send "Minty-I3 Ready" "Press ⊞+Shift+? or ⊞+F1 for keyboard shortcuts" --expire-time=5000 &
 EOF
     
-    chmod +x "$HOME/.config/i3/autostart.sh"
+    chmod +x "$USER_HOME/.config/i3/autostart.sh"
+    
+    # Set ownership to the user
+    if [ -n "$SUDO_USER" ]; then
+        chown "$SUDO_USER:$SUDO_USER" "$USER_HOME/.config/i3/autostart.sh" 2>/dev/null || true
+    fi
 }
 
 # Create desktop session entry
